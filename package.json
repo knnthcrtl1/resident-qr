@@ -1,0 +1,10 @@
+{
+  "name": "subdivision-app",
+  "private": true,
+  "packageManager": "pnpm@9",
+  "scripts": {
+    "dev:resident": "pnpm -C apps/resident-app start",
+    "dev:guard": "pnpm -C apps/guard-app start",
+    "install:all": "pnpm install"
+  }
+}
