@@ -1,0 +1,11 @@
+{
+  "name": "subdivision-qr",
+  "private": true,
+  "packageManager": "pnpm@9",
+  "scripts": {
+    "dev:resident": "pnpm --filter resident-app start",
+    "dev:guard": "pnpm --filter guard-app start",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck"
+  }
+}
