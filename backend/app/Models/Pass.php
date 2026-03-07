@@ -33,4 +33,14 @@ class Pass extends Model
     {
         return $this->belongsTo(Household::class);
     }
+
+    public function issuedByUser()
+    {
+        return $this->belongsTo(User::class, 'issued_by_user_id');
+    }
+
+    public function subjectUser()
+    {
+        return $this->belongsTo(User::class, 'subject_user_id');
+    }
 }

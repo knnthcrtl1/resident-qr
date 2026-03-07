@@ -25,4 +25,9 @@ class ScanLog extends Model
     {
         return $this->belongsTo(Pass::class);
     }
+
+    public function guardUser()
+    {
+        return $this->belongsTo(User::class, 'guard_user_id');
+    }
 }

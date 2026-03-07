@@ -34,4 +34,19 @@ class User extends Authenticatable
     {
         return $this->hasOne(GuardProfile::class);
     }
+
+    public function issuedPasses()
+    {
+        return $this->hasMany(Pass::class, 'issued_by_user_id');
+    }
+
+    public function subjectPasses()
+    {
+        return $this->hasMany(Pass::class, 'subject_user_id');
+    }
+
+    public function scanLogs()
+    {
+        return $this->hasMany(ScanLog::class, 'guard_user_id');
+    }
 }
