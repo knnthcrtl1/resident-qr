@@ -23,3 +23,11 @@ export type ValidateScanResponse = {
     directionAllowed: Direction[];
   };
 };
+
+export type User = {
+  id: number;
+  name: string;
+  email?: string;
+  phone?: string;
+  role?: "resident" | "guard" | "admin";
+};

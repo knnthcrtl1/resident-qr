@@ -1,0 +1,11 @@
+{
+  "name": "@qr/store",
+  "version": "0.0.1",
+  "private": true,
+  "main": "src/authStore.ts",
+  "types": "src/authStore.ts",
+  "dependencies": {
+    "zustand": "^4.5.2",
+    "@qr/types": "workspace:*"
+  }
+}

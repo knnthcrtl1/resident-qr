@@ -1,38 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, Button } from "react-native";
-import QRCode from "react-native-qrcode-svg";
-import { api } from "@qr/api";
+import React from "react";
+import { router } from "expo-router";
+import { Screen, AppButton, AppText } from "@qr/ui";
 
-export default function Home() {
-  const [token, setToken] = useState("");
-
-  async function refresh() {
-    // temporary hardcode user_id for testing
-    const res = await api.issueResidentToken(1);
-    if (res.ok) setToken(res.qrToken);
-  }
-
-  useEffect(() => {
-    refresh();
-    const t = setInterval(refresh, 30000);
-    return () => clearInterval(t);
-  }, []);
-
+export default function HomeScreen() {
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 16,
-      }}
-    >
-      <Text style={{ fontSize: 18, marginBottom: 12 }}>
-        Resident Rotating QR
-      </Text>
-      {token ? <QRCode value={token} size={240} /> : <Text>Loading...</Text>}
-      <View style={{ height: 16 }} />
-      <Button title="Refresh" onPress={refresh} />
-    </View>
+    <Screen>
+      <AppText style={{ fontSize: 24, fontWeight: "700", marginBottom: 20 }}>
+        Resident App
+      </AppText>
+
+      <AppButton title="Login" onPress={() => router.push("/login")} />
+      <AppText style={{ height: 12 }} />
+      <AppButton title="Show QR" onPress={() => router.push("/qr")} />
+      <AppText style={{ height: 12 }} />
+      <AppButton
+        title="Create Visitor Pass"
+        onPress={() => router.push("/create-visitor")}
+      />
+      <AppText style={{ height: 12 }} />
+      <AppButton title="History" onPress={() => router.push("/history")} />
+    </Screen>
   );
 }
