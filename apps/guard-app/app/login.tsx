@@ -11,6 +11,8 @@ export default function GuardLoginScreen() {
 
   async function onLogin() {
     const res = await api.login(emailOrPhone, password);
+
+    console.log('res', res),
     if (res.ok && res.user) {
       setUser(res.user);
       Alert.alert("Success", `Welcome ${res.user.name}`);
