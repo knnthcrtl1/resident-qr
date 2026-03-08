@@ -11,17 +11,24 @@ export default function LoginScreen() {
   const [password, setPassword] = useState("");
 
   async function onLogin() {
-    const res = await api.login(emailOrPhone, password);
+    try {
+      console.log("Starting login attempt with:", { emailOrPhone, password });
+      const res = await api.login(emailOrPhone, password);
+      console.log("Login response:", res);
 
-    if (res.ok && res.user) {
-      setUser(res.user);
-      if (res.token) {
-        setToken(res.token);
-        setAuthToken(res.token);
+      if (res.ok && res.user) {
+        setUser(res.user);
+        if (res.token) {
+          setToken(res.token);
+          setAuthToken(res.token);
+        }
+        Alert.alert("Success", `Welcome ${res.user.name}`);
+      } else {
+        Alert.alert("Login failed", res.message || "Invalid credentials");
       }
-      Alert.alert("Success", `Welcome ${res.user.name}`);
-    } else {
-      Alert.alert("Login failed", res.message || "Invalid credentials");
+    } catch (error) {
+      console.error("Login error:", error);
+      Alert.alert("Error", "Network error or server not reachable");
     }
   }
 

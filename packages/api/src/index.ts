@@ -1,4 +1,5 @@
 import type { ValidateScanResponse, User } from "@qr/types";
+import axios from "axios";
 
 type ApiConfig = { baseUrl: string; token?: string };
 let config: ApiConfig = { baseUrl: "" };
@@ -21,11 +22,30 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     headers.Authorization = `Bearer ${config.token}`;
   }
 
-  const res = await fetch(`${config.baseUrl}${path}`, {
+  const url = `${config.baseUrl}${path}`;
+  console.log(
+    "Making API request to:",
+    url,
+    "with method:",
+    init?.method || "GET",
+  );
+
+  const response = await axios({
+    method: init?.method || "GET",
+    url,
     headers,
-    ...init,
+    data: init?.body ? JSON.parse(init.body) : undefined,
+    validateStatus: () => true, // Don't throw on any status code
   });
-  return res.json();
+
+  console.log(
+    "API response status:",
+    response.status,
+    "ok:",
+    response.status >= 200 && response.status < 300,
+  );
+
+  return response.data;
 }
 
 export const api = {

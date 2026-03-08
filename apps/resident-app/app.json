@@ -40,6 +40,19 @@
         }
       ]
     ],
+    "ios": {
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true,
+          "NSAllowsLocalNetworking": true
+        }
+      }
+    },
+    "android": {
+      "networkSecurityConfig": {
+        "cleartextTrafficPermitted": true
+      }
+    },
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
