@@ -3,6 +3,7 @@ import { TextInput, Alert } from "react-native";
 import { api, setAuthToken } from "@qr/api";
 import { useAuthStore } from "@qr/store";
 import { Screen, AppButton, AppText } from "@qr/ui";
+import axios from "axios";
 
 export default function LoginScreen() {
   const setUser = useAuthStore((s) => s.setUser);
@@ -10,6 +11,18 @@ export default function LoginScreen() {
   const [emailOrPhone, setEmailOrPhone] = useState("");
   const [password, setPassword] = useState("");
 
+  async function testPing() {
+    try {
+      console.log("Testing direct ping...");
+      const res = await axios.get("http://192.168.1.43:8080/api/ping");
+      console.log("PING SUCCESS:", res.status, res.data);
+    } catch (error: any) {
+      console.log("PING ERROR MESSAGE:", error.message);
+      console.log("PING ERROR CODE:", error.code);
+      console.log("PING ERROR RESPONSE:", error?.response?.data);
+      console.log("PING ERROR STATUS:", error?.response?.status);
+    }
+  }
   async function onLogin() {
     try {
       console.log("Starting login attempt with:", { emailOrPhone, password });
@@ -66,6 +79,7 @@ export default function LoginScreen() {
       />
 
       <AppButton title="Login" onPress={onLogin} />
+      <AppButton title="Test Ping" onPress={testPing} />
     </Screen>
   );
 }

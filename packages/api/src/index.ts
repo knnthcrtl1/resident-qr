@@ -2,14 +2,18 @@ import type { ValidateScanResponse, User } from "@qr/types";
 import axios from "axios";
 
 type ApiConfig = { baseUrl: string; token?: string };
-let config: ApiConfig = { baseUrl: "" };
+let config: ApiConfig = { baseUrl: "http://192.168.1.43:8080/api" };
+
+const client = axios.create({
+  baseURL: config.baseUrl,
+});
+
+export const setAuthToken = (token: string) => {
+  client.defaults.headers.common.Authorization = `Bearer ${token}`;
+};
 
 export function setApiConfig(next: ApiConfig) {
   config = next;
-}
-
-export function setAuthToken(token: string | null) {
-  config.token = token || undefined;
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
