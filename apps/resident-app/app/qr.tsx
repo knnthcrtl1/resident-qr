@@ -11,6 +11,8 @@ export default function QRScreen() {
   async function refresh() {
     if (!user) return;
     const res = await api.issueResidentToken(user.id);
+
+    console.log("res =>", res);
     if (res.ok) setToken(res.qrToken);
   }
 

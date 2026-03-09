@@ -30,6 +30,8 @@ export default function CreateVisitorScreen() {
       valid_until: later.toISOString(),
     });
 
+    console.log("res =>", res);
+
     if (res.ok) {
       Alert.alert("Success", "Visitor pass created");
     } else {

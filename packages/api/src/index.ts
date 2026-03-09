@@ -8,12 +8,29 @@ const client = axios.create({
   baseURL: config.baseUrl,
 });
 
+client.interceptors.request.use((config) => {
+  console.log("REQUEST:", config.method, config.url, config.data);
+  return config;
+});
+
+client.interceptors.response.use(
+  (response) => {
+    console.log("RESPONSE:", response.status, response.data);
+    return response;
+  },
+  (error) => {
+    console.log("ERROR:", error?.response?.status, error?.response?.data);
+    return Promise.reject(error);
+  },
+);
+
 export const setAuthToken = (token: string) => {
   client.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
 
 export function setApiConfig(next: ApiConfig) {
   config = next;
+  client.defaults.baseURL = config.baseUrl;
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -26,17 +43,16 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     headers.Authorization = `Bearer ${config.token}`;
   }
 
-  const url = `${config.baseUrl}${path}`;
   console.log(
     "Making API request to:",
-    url,
+    path,
     "with method:",
     init?.method || "GET",
   );
 
-  const response = await axios({
+  const response = await client({
     method: init?.method || "GET",
-    url,
+    url: path,
     headers,
     data: init?.body ? JSON.parse(init.body) : undefined,
     validateStatus: () => true, // Don't throw on any status code

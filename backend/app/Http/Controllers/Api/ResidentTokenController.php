@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Household;
 use App\Models\ResidentProfile;
+use App\Models\User;
 use App\Services\JwtService;
 use Illuminate\Http\Request;
 
@@ -15,7 +17,30 @@ class ResidentTokenController extends Controller
             'user_id' => 'required|exists:users,id',
         ]);
 
-        $profile = ResidentProfile::where('user_id', $data['user_id'])->firstOrFail();
+        $user = User::findOrFail($data['user_id']);
+
+        if ($user->role !== 'resident') {
+            return response()->json([
+                'ok' => false,
+                'message' => 'User is not a resident.',
+            ], 403);
+        }
+
+        $profile = $user->residentProfile;
+
+        if (!$profile) {
+            // Create a default household and profile for the user
+            $household = Household::firstOrCreate([
+                'house_no' => 'unknown',
+                'street' => null,
+            ]);
+
+            $profile = ResidentProfile::create([
+                'user_id' => $user->id,
+                'household_id' => $household->id,
+                'resident_type' => 'member',
+            ]);
+        }
 
         $issued = $jwt->issue([
             'type' => 'resident',
