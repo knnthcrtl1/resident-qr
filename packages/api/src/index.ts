@@ -2,7 +2,7 @@ import type { ValidateScanResponse, User } from "@qr/types";
 import axios from "axios";
 
 type ApiConfig = { baseUrl: string; token?: string };
-let config: ApiConfig = { baseUrl: "http://192.168.1.43:8080/api" };
+let config: ApiConfig = { baseUrl: "http://192.168.1.43:8000/api" };
 
 const client = axios.create({
   baseURL: config.baseUrl,
