@@ -5,6 +5,11 @@
   "scripts": {
     "dev:resident": "pnpm -C apps/resident-app start",
     "dev:guard": "pnpm -C apps/guard-app start",
-    "install:all": "pnpm install"
+    "install:all": "pnpm install",
+    "lint:resident": "pnpm -C apps/resident-app lint",
+    "lint:guard": "pnpm -C apps/guard-app lint",
+    "lint:frontend": "pnpm lint:resident && pnpm lint:guard",
+    "lint:backend": "composer --working-dir backend run lint",
+    "lint": "pnpm lint:frontend && pnpm lint:backend"
   }
 }
