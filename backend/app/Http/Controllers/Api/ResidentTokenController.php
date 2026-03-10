@@ -3,27 +3,22 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\IssueResidentTokenRequest;
 use App\Models\Household;
 use App\Models\ResidentProfile;
 use App\Models\User;
 use App\Services\JwtService;
-use Illuminate\Http\Request;
 
 class ResidentTokenController extends Controller
 {
-    public function issue(Request $request, JwtService $jwt)
+    public function issue(IssueResidentTokenRequest $request, JwtService $jwt)
     {
-        $data = $request->validate([
-            'user_id' => 'required|exists:users,id',
-        ]);
+        $data = $request->validated();
 
         $user = User::findOrFail($data['user_id']);
 
         if ($user->role !== 'resident') {
-            return response()->json([
-                'ok' => false,
-                'message' => 'User is not a resident.',
-            ], 403);
+            return $this->sendError('User is not a resident.', 403);
         }
 
         $profile = $user->residentProfile;
@@ -49,7 +44,9 @@ class ResidentTokenController extends Controller
         ], 60);
 
         return response()->json([
+            'success' => true,
             'ok' => true,
+            'message' => 'Resident token issued.',
             'qrToken' => $issued['token'],
             'expiresIn' => 60,
         ]);

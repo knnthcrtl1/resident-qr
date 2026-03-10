@@ -3,31 +3,24 @@ import { TextInput, Alert } from "react-native";
 import { api, setAuthToken } from "@qr/api";
 import { useAuthStore } from "@qr/store";
 import { Screen, AppButton, AppText } from "@qr/ui";
-import axios from "axios";
 
 export default function LoginScreen() {
   const setUser = useAuthStore((s) => s.setUser);
   const setToken = useAuthStore((s) => s.setToken);
   const [emailOrPhone, setEmailOrPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  async function testPing() {
-    try {
-      console.log("Testing direct ping...");
-      const res = await axios.get("http://192.168.1.43:8080/api/ping");
-      console.log("PING SUCCESS:", res.status, res.data);
-    } catch (error: any) {
-      console.log("PING ERROR MESSAGE:", error.message);
-      console.log("PING ERROR CODE:", error.code);
-      console.log("PING ERROR RESPONSE:", error?.response?.data);
-      console.log("PING ERROR STATUS:", error?.response?.status);
-    }
-  }
   async function onLogin() {
+    if (isSubmitting) return;
+    if (!emailOrPhone.trim() || !password) {
+      Alert.alert("Missing fields", "Email/phone and password are required.");
+      return;
+    }
+
+    setIsSubmitting(true);
     try {
-      console.log("Starting login attempt with:", { emailOrPhone, password });
       const res = await api.login(emailOrPhone, password);
-      console.log("Login response:", res);
 
       if (res.ok && res.user) {
         setUser(res.user);
@@ -42,6 +35,8 @@ export default function LoginScreen() {
     } catch (error) {
       console.error("Login error:", error);
       Alert.alert("Error", "Network error or server not reachable");
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -78,8 +73,11 @@ export default function LoginScreen() {
         }}
       />
 
-      <AppButton title="Login" onPress={onLogin} />
-      <AppButton title="Test Ping" onPress={testPing} />
+      <AppButton
+        title={isSubmitting ? "Logging in..." : "Login"}
+        onPress={onLogin}
+        disabled={isSubmitting}
+      />
     </Screen>
   );
 }

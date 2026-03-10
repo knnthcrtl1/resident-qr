@@ -13,7 +13,7 @@ export default function ScanScreen() {
 
   useEffect(() => {
     if (!permission?.granted) requestPermission();
-  }, [permission?.granted]);
+  }, [permission?.granted, requestPermission]);
 
   async function onScan(token: string) {
     if (!user || busy) return;

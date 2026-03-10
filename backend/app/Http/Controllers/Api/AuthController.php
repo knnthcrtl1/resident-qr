@@ -3,25 +3,18 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\LoginRequest;
+use App\Http\Requests\Api\RegisterResidentRequest;
 use App\Models\User;
 use App\Models\Household;
 use App\Models\ResidentProfile;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function registerResident(Request $request)
+    public function registerResident(RegisterResidentRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'nullable|email|unique:users,email',
-            'phone' => 'nullable|string|unique:users,phone',
-            'password' => 'required|string|min:6',
-            'house_no' => 'required|string|max:100',
-            'street' => 'nullable|string|max:255',
-            'resident_type' => 'nullable|in:owner,tenant,member',
-        ]);
+        $data = $request->validated();
 
         $user = User::create([
             'name' => $data['name'],
@@ -43,41 +36,31 @@ class AuthController extends Controller
             'resident_type' => $data['resident_type'] ?? 'member',
         ]);
 
-        return response()->json([
-            'ok' => true,
-            'message' => 'Registration submitted. Awaiting approval.',
-        ]);
+        return $this->sendResponse(null, 'Registration submitted. Awaiting approval.');
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $data = $request->validate([
-            'emailOrPhone' => 'required|string',
-            'password' => 'required|string',
-        ]);
+        $data = $request->validated();
 
         $user = User::where('email', $data['emailOrPhone'])
             ->orWhere('phone', $data['emailOrPhone'])
             ->first();
 
         if (!$user || !Hash::check($data['password'], $user->password)) {
-            return response()->json([
-                'ok' => false,
-                'message' => 'Invalid credentials.',
-            ], 401);
+            return $this->sendError('Invalid credentials.', 401);
         }
 
         if ($user->status !== 'active') {
-            return response()->json([
-                'ok' => false,
-                'message' => 'Account not active.',
-            ], 403);
+            return $this->sendError('Account not active.', 403);
         }
 
         $token = $user->createToken('mobile-token')->plainTextToken;
 
         return response()->json([
+            'success' => true,
             'ok' => true,
+            'message' => 'Login successful.',
             'token' => $token,
             'user' => [
                 'id' => $user->id,

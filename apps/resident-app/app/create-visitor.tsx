@@ -9,33 +9,55 @@ export default function CreateVisitorScreen() {
   const [visitorName, setVisitorName] = useState("");
   const [hasVehicle, setHasVehicle] = useState(false);
   const [plateNo, setPlateNo] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function onCreate() {
+    if (isSubmitting) return;
     if (!user) {
       Alert.alert("Error", "Please login first");
       return;
     }
 
-    const now = new Date();
-    const later = new Date(Date.now() + 2 * 60 * 60 * 1000);
+    if (!visitorName.trim()) {
+      Alert.alert("Missing fields", "Visitor name is required.");
+      return;
+    }
 
-    const res = await api.createPass({
-      pass_type: "visitor",
-      household_id: 1,
-      issued_by_user_id: user.id,
-      visitor_name: visitorName,
-      has_vehicle: hasVehicle,
-      plate_no: hasVehicle ? plateNo : "",
-      valid_from: now.toISOString(),
-      valid_until: later.toISOString(),
-    });
+    if (hasVehicle && !plateNo.trim()) {
+      Alert.alert(
+        "Missing fields",
+        "Plate number is required when vehicle is enabled.",
+      );
+      return;
+    }
 
-    console.log("res =>", res);
+    setIsSubmitting(true);
 
-    if (res.ok) {
-      Alert.alert("Success", "Visitor pass created");
-    } else {
-      Alert.alert("Error", res.message || "Could not create pass");
+    try {
+      const now = new Date();
+      const later = new Date(Date.now() + 2 * 60 * 60 * 1000);
+
+      const res = await api.createPass({
+        pass_type: "visitor",
+        household_id: 1,
+        issued_by_user_id: user.id,
+        visitor_name: visitorName,
+        has_vehicle: hasVehicle,
+        plate_no: hasVehicle ? plateNo : "",
+        valid_from: now.toISOString(),
+        valid_until: later.toISOString(),
+      });
+
+      if (res.ok) {
+        Alert.alert("Success", "Visitor pass created");
+      } else {
+        Alert.alert("Error", res.message || "Could not create pass");
+      }
+    } catch (error) {
+      console.error("Create pass error:", error);
+      Alert.alert("Error", "Could not create pass. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -77,7 +99,11 @@ export default function CreateVisitorScreen() {
         />
       ) : null}
 
-      <AppButton title="Create Pass" onPress={onCreate} />
+      <AppButton
+        title={isSubmitting ? "Creating pass..." : "Create Pass"}
+        onPress={onCreate}
+        disabled={isSubmitting}
+      />
     </Screen>
   );
 }

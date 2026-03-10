@@ -8,22 +8,6 @@ const client = axios.create({
   baseURL: config.baseUrl,
 });
 
-client.interceptors.request.use((config) => {
-  console.log("REQUEST:", config.method, config.url, config.data);
-  return config;
-});
-
-client.interceptors.response.use(
-  (response) => {
-    console.log("RESPONSE:", response.status, response.data);
-    return response;
-  },
-  (error) => {
-    console.log("ERROR:", error?.response?.status, error?.response?.data);
-    return Promise.reject(error);
-  },
-);
-
 export const setAuthToken = (token: string) => {
   client.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
@@ -43,13 +27,6 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     headers.Authorization = `Bearer ${config.token}`;
   }
 
-  console.log(
-    "Making API request to:",
-    path,
-    "with method:",
-    init?.method || "GET",
-  );
-
   const response = await client({
     method: init?.method || "GET",
     url: path,
@@ -58,22 +35,35 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     validateStatus: () => true, // Don't throw on any status code
   });
 
-  console.log(
-    "API response status:",
-    response.status,
-    "ok:",
-    response.status >= 200 && response.status < 300,
-  );
+  const data = response.data as any;
 
-  return response.data;
+  // Normalize backend envelopes so consumers can rely on `ok`.
+  if (data && typeof data === "object" && data.ok === undefined) {
+    if (typeof data.success === "boolean") {
+      data.ok = data.success;
+    }
+  }
+
+  return data as T;
+}
+
+function createIdempotencyKey() {
+  const maybeCrypto = globalThis.crypto as
+    | { randomUUID?: () => string }
+    | undefined;
+  if (maybeCrypto?.randomUUID) return maybeCrypto.randomUUID();
+  return `idem-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
 export const api = {
   login: (emailOrPhone: string, password: string) =>
-    request<{ ok: boolean; user?: User; message?: string }>("/auth/login", {
-      method: "POST",
-      body: JSON.stringify({ emailOrPhone, password }),
-    }),
+    request<{ ok: boolean; user?: User; token?: string; message?: string }>(
+      "/auth/login",
+      {
+        method: "POST",
+        body: JSON.stringify({ emailOrPhone, password }),
+      },
+    ),
 
   issueResidentToken: (user_id: number) =>
     request<{ ok: boolean; qrToken: string; expiresIn: number }>(
@@ -84,14 +74,21 @@ export const api = {
       },
     ),
 
-  createPass: (payload: any) =>
+  createPass: (payload: any) => {
+    const { idempotencyKey, ...bodyPayload } = payload ?? {};
+    const key = idempotencyKey || createIdempotencyKey();
+
     request<{ ok: boolean; pass?: any; qrToken?: string; message?: string }>(
       "/passes",
       {
         method: "POST",
-        body: JSON.stringify(payload),
+        headers: {
+          "X-Idempotency-Key": key,
+        },
+        body: JSON.stringify(bodyPayload),
       },
-    ),
+    );
+  },
 
   validateScan: (payload: {
     token: string;
