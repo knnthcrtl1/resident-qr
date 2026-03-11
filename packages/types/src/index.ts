@@ -30,4 +30,5 @@ export type User = {
   email?: string;
   phone?: string;
   role?: "resident" | "guard" | "admin";
+  householdId?: number | null;
 };

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { TextInput, Alert } from "react-native";
+import { router } from "expo-router";
 import { api, setAuthToken } from "@qr/api";
 import { useAuthStore } from "@qr/store";
 import { Screen, AppButton, AppText } from "@qr/ui";
+import { saveResidentSession } from "../hooks/resident-session";
 
 export default function LoginScreen() {
   const setUser = useAuthStore((s) => s.setUser);
@@ -22,13 +24,13 @@ export default function LoginScreen() {
     try {
       const res = await api.login(emailOrPhone, password);
 
-      if (res.ok && res.user) {
+      if (res.ok && res.user && res.token) {
         setUser(res.user);
-        if (res.token) {
-          setToken(res.token);
-          setAuthToken(res.token);
-        }
+        setToken(res.token);
+        setAuthToken(res.token);
+        await saveResidentSession({ user: res.user, token: res.token });
         Alert.alert("Success", `Welcome ${res.user.name}`);
+        router.replace("/");
       } else {
         Alert.alert("Login failed", res.message || "Invalid credentials");
       }

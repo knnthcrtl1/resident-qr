@@ -78,16 +78,18 @@ export const api = {
     const { idempotencyKey, ...bodyPayload } = payload ?? {};
     const key = idempotencyKey || createIdempotencyKey();
 
-    request<{ ok: boolean; pass?: any; qrToken?: string; message?: string }>(
-      "/passes",
-      {
-        method: "POST",
-        headers: {
-          "X-Idempotency-Key": key,
-        },
-        body: JSON.stringify(bodyPayload),
+    return request<{
+      ok: boolean;
+      pass?: any;
+      qrToken?: string;
+      message?: string;
+    }>("/passes", {
+      method: "POST",
+      headers: {
+        "X-Idempotency-Key": key,
       },
-    );
+      body: JSON.stringify(bodyPayload),
+    });
   },
 
   validateScan: (payload: {

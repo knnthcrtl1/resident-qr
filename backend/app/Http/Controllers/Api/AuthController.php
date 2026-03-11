@@ -43,7 +43,8 @@ class AuthController extends Controller
     {
         $data = $request->validated();
 
-        $user = User::where('email', $data['emailOrPhone'])
+        $user = User::with('residentProfile')
+            ->where('email', $data['emailOrPhone'])
             ->orWhere('phone', $data['emailOrPhone'])
             ->first();
 
@@ -68,6 +69,7 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'phone' => $user->phone,
                 'role' => $user->role,
+                'householdId' => $user->residentProfile?->household_id,
             ],
         ]);
     }
