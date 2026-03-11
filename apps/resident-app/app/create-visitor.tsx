@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import QRCode from "react-native-qrcode-svg";
 import { router } from "expo-router";
-import { Alert, Pressable, Share, Switch, TextInput, View } from "react-native";
+import {
+  Alert,
+  Linking,
+  Pressable,
+  Share,
+  Switch,
+  TextInput,
+  View,
+} from "react-native";
 import { api } from "@qr/api";
 import { useAuthStore } from "@qr/store";
 import { Screen, AppButton, AppText } from "@qr/ui";
@@ -18,14 +26,45 @@ export default function CreateVisitorScreen() {
     label: string;
     passType: "visitor" | "delivery";
     qrToken: string;
+    guestUrl?: string;
   } | null>(null);
 
   async function sharePass() {
     if (!generatedPass) return;
 
+    const guestLinkLine = generatedPass.guestUrl
+      ? `\n\nGuest web pass (no app):\n${generatedPass.guestUrl}`
+      : "";
+
     await Share.share({
-      message: `${generatedPass.passType === "visitor" ? "Visitor" : "Delivery"} pass for ${generatedPass.label}\n\nQR token:\n${generatedPass.qrToken}`,
+      message: `${generatedPass.passType === "visitor" ? "Visitor" : "Delivery"} pass for ${generatedPass.label}\n\nQR token:\n${generatedPass.qrToken}${guestLinkLine}\n\nGuest can just show the QR image or screenshot at the gate.`,
     });
+  }
+
+  async function shareGuestLink() {
+    if (!generatedPass?.guestUrl) {
+      Alert.alert("Missing link", "Guest web pass link is not available.");
+      return;
+    }
+
+    await Share.share({
+      message: `Guest pass link (no account, no app):\n${generatedPass.guestUrl}`,
+    });
+  }
+
+  async function openGuestLink() {
+    if (!generatedPass?.guestUrl) {
+      Alert.alert("Missing link", "Guest web pass link is not available.");
+      return;
+    }
+
+    const canOpen = await Linking.canOpenURL(generatedPass.guestUrl);
+    if (!canOpen) {
+      Alert.alert("Cannot open", "Could not open guest pass link.");
+      return;
+    }
+
+    await Linking.openURL(generatedPass.guestUrl);
   }
 
   async function onCreate() {
@@ -90,6 +129,7 @@ export default function CreateVisitorScreen() {
             passType === "visitor" ? visitorName.trim() : deliveryType.trim(),
           passType,
           qrToken: res.qrToken,
+          guestUrl: res.guestUrl,
         });
         Alert.alert(
           "Pass created",
@@ -113,8 +153,8 @@ export default function CreateVisitorScreen() {
       </AppText>
 
       <AppText style={{ marginBottom: 16 }}>
-        Resident creates the pass, then shares the generated QR token directly
-        to the visitor or delivery rider.
+        Resident creates the pass, then shares the QR image/screenshot or guest
+        web link directly to the visitor or delivery rider.
       </AppText>
 
       <View style={{ flexDirection: "row", gap: 12, marginBottom: 16 }}>
@@ -224,10 +264,14 @@ export default function CreateVisitorScreen() {
           </AppText>
           <QRCode value={generatedPass.qrToken} size={220} />
           <AppText style={{ marginVertical: 16, textAlign: "center" }}>
-            Ask the guest to present this QR at the gate, or share the token
-            directly.
+            Ask the guest to present this QR at the gate. They can also show a
+            screenshot or open the guest web link.
           </AppText>
           <AppButton title="Share Pass" onPress={sharePass} />
+          <View style={{ height: 10 }} />
+          <AppButton title="Share Guest Link" onPress={shareGuestLink} />
+          <View style={{ height: 10 }} />
+          <AppButton title="Open Guest Link" onPress={openGuestLink} />
         </View>
       ) : null}
     </Screen>

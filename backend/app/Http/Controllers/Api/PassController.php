@@ -8,6 +8,7 @@ use App\Models\Pass;
 use App\Services\JwtService;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
 class PassController extends Controller
@@ -68,6 +69,7 @@ class PassController extends Controller
             'message' => 'Pass created successfully.',
             'pass' => $pass,
             'qrToken' => $issued['token'],
+            'guestUrl' => URL::to('/guest-pass') . '?token=' . urlencode($issued['token']),
         ];
 
         if ($cacheKey) {

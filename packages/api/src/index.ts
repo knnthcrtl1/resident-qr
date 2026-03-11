@@ -82,6 +82,7 @@ export const api = {
       ok: boolean;
       pass?: any;
       qrToken?: string;
+      guestUrl?: string;
       message?: string;
     }>("/passes", {
       method: "POST",
