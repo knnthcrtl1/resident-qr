@@ -91,6 +91,26 @@ class ScanController extends Controller
             ], 409);
         }
 
+        if ($pass->status === 'expired') {
+            $this->logScan($pass->id, $data, $rawHash, 'EXPIRED');
+            return response()->json([
+                'success' => false,
+                'ok' => false,
+                'result' => 'EXPIRED',
+                'message' => 'Pass expired.',
+            ], 422);
+        }
+
+        if ($pass->status !== 'active') {
+            $this->logScan($pass->id, $data, $rawHash, 'DENIED_RULE');
+            return response()->json([
+                'success' => false,
+                'ok' => false,
+                'result' => 'DENIED_RULE',
+                'message' => 'Pass is inactive.',
+            ], 409);
+        }
+
         if (now()->lt($pass->valid_from) || now()->gt($pass->valid_until)) {
             $this->logScan($pass->id, $data, $rawHash, 'EXPIRED');
             return response()->json([
