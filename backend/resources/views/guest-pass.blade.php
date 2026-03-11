@@ -88,7 +88,7 @@
     <p>No account or app is needed. Show this QR (or a screenshot) at the gate.</p>
     <div id="qr" aria-label="Guest QR code"></div>
     <p class="hint">Tip: Keep this page open or take a screenshot before arriving.</p>
-    <div class="token">Token: {{ $token }}</div>
+    <!-- <div class="token">Token: {{ $token }}</div> -->
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>

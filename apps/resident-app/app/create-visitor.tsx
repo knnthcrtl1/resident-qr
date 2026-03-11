@@ -5,6 +5,7 @@ import {
   Alert,
   Linking,
   Pressable,
+  ScrollView,
   Share,
   Switch,
   TextInput,
@@ -148,132 +149,139 @@ export default function CreateVisitorScreen() {
 
   return (
     <Screen>
-      <AppText style={{ fontSize: 22, fontWeight: "700", marginBottom: 16 }}>
-        Create Visitor or Delivery Pass
-      </AppText>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 28 }}
+        showsVerticalScrollIndicator={false}
+      >
+        <AppText style={{ fontSize: 22, fontWeight: "700", marginBottom: 16 }}>
+          Create Visitor or Delivery Pass
+        </AppText>
 
-      <AppText style={{ marginBottom: 16 }}>
-        Resident creates the pass, then shares the QR image/screenshot or guest
-        web link directly to the visitor or delivery rider.
-      </AppText>
+        <AppText style={{ marginBottom: 16 }}>
+          Resident creates the pass, then shares the QR image/screenshot or
+          guest web link directly to the visitor or delivery rider.
+        </AppText>
 
-      <View style={{ flexDirection: "row", gap: 12, marginBottom: 16 }}>
-        <Pressable
-          onPress={() => setPassType("visitor")}
-          style={{
-            backgroundColor: passType === "visitor" ? "#111827" : "#e5e7eb",
-            borderRadius: 999,
-            paddingHorizontal: 16,
-            paddingVertical: 10,
-          }}
-        >
-          <AppText
-            style={{ color: passType === "visitor" ? "white" : "#111827" }}
+        <View style={{ flexDirection: "row", gap: 12, marginBottom: 16 }}>
+          <Pressable
+            onPress={() => setPassType("visitor")}
+            style={{
+              backgroundColor: passType === "visitor" ? "#111827" : "#e5e7eb",
+              borderRadius: 999,
+              paddingHorizontal: 16,
+              paddingVertical: 10,
+            }}
           >
-            Visitor
-          </AppText>
-        </Pressable>
+            <AppText
+              style={{ color: passType === "visitor" ? "white" : "#111827" }}
+            >
+              Visitor
+            </AppText>
+          </Pressable>
 
-        <Pressable
-          onPress={() => setPassType("delivery")}
-          style={{
-            backgroundColor: passType === "delivery" ? "#111827" : "#e5e7eb",
-            borderRadius: 999,
-            paddingHorizontal: 16,
-            paddingVertical: 10,
-          }}
-        >
-          <AppText
-            style={{ color: passType === "delivery" ? "white" : "#111827" }}
+          <Pressable
+            onPress={() => setPassType("delivery")}
+            style={{
+              backgroundColor: passType === "delivery" ? "#111827" : "#e5e7eb",
+              borderRadius: 999,
+              paddingHorizontal: 16,
+              paddingVertical: 10,
+            }}
           >
-            Delivery
-          </AppText>
-        </Pressable>
-      </View>
-
-      {passType === "visitor" ? (
-        <TextInput
-          placeholder="Visitor name"
-          value={visitorName}
-          onChangeText={setVisitorName}
-          style={{
-            borderWidth: 1,
-            borderColor: "#ccc",
-            padding: 12,
-            borderRadius: 8,
-            marginBottom: 12,
-          }}
-        />
-      ) : (
-        <TextInput
-          placeholder="Delivery type or rider label"
-          value={deliveryType}
-          onChangeText={setDeliveryType}
-          style={{
-            borderWidth: 1,
-            borderColor: "#ccc",
-            padding: 12,
-            borderRadius: 8,
-            marginBottom: 12,
-          }}
-        />
-      )}
-
-      <AppText style={{ marginBottom: 8 }}>Has vehicle?</AppText>
-      <Switch value={hasVehicle} onValueChange={setHasVehicle} />
-
-      {hasVehicle ? (
-        <TextInput
-          placeholder="Plate number"
-          value={plateNo}
-          onChangeText={setPlateNo}
-          style={{
-            borderWidth: 1,
-            borderColor: "#ccc",
-            padding: 12,
-            borderRadius: 8,
-            marginTop: 12,
-            marginBottom: 12,
-          }}
-        />
-      ) : null}
-
-      <AppButton
-        title={isSubmitting ? "Creating pass..." : "Create Pass"}
-        onPress={onCreate}
-        disabled={isSubmitting}
-      />
-
-      {generatedPass ? (
-        <View
-          style={{
-            alignItems: "center",
-            borderColor: "#e5e7eb",
-            borderRadius: 16,
-            borderWidth: 1,
-            marginTop: 24,
-            padding: 16,
-          }}
-        >
-          <AppText style={{ fontSize: 18, fontWeight: "700", marginBottom: 8 }}>
-            Ready to Share
-          </AppText>
-          <AppText style={{ marginBottom: 16 }}>
-            {generatedPass.passType === "visitor" ? "Visitor" : "Delivery"}:{" "}
-            {generatedPass.label}
-          </AppText>
-          <QRCode value={generatedPass.qrToken} size={220} />
-          <AppText style={{ marginVertical: 16, textAlign: "center" }}>
-            Ask the guest to present this QR at the gate. They can also show a
-            screenshot or open the guest web link.
-          </AppText>
-          <AppButton title="Share Pass" onPress={sharePass} />
-          <View style={{ height: 10 }} />
-          <AppButton title="Share Guest Link" onPress={shareGuestLink} />
-          <View style={{ height: 10 }} />
-          <AppButton title="Open Guest Link" onPress={openGuestLink} />
+            <AppText
+              style={{ color: passType === "delivery" ? "white" : "#111827" }}
+            >
+              Delivery
+            </AppText>
+          </Pressable>
         </View>
-      ) : null}
+
+        {passType === "visitor" ? (
+          <TextInput
+            placeholder="Visitor name"
+            value={visitorName}
+            onChangeText={setVisitorName}
+            style={{
+              borderWidth: 1,
+              borderColor: "#ccc",
+              padding: 12,
+              borderRadius: 8,
+              marginBottom: 12,
+            }}
+          />
+        ) : (
+          <TextInput
+            placeholder="Delivery type or rider label"
+            value={deliveryType}
+            onChangeText={setDeliveryType}
+            style={{
+              borderWidth: 1,
+              borderColor: "#ccc",
+              padding: 12,
+              borderRadius: 8,
+              marginBottom: 12,
+            }}
+          />
+        )}
+
+        <AppText style={{ marginBottom: 8 }}>Has vehicle?</AppText>
+        <Switch value={hasVehicle} onValueChange={setHasVehicle} />
+
+        {hasVehicle ? (
+          <TextInput
+            placeholder="Plate number"
+            value={plateNo}
+            onChangeText={setPlateNo}
+            style={{
+              borderWidth: 1,
+              borderColor: "#ccc",
+              padding: 12,
+              borderRadius: 8,
+              marginTop: 12,
+              marginBottom: 12,
+            }}
+          />
+        ) : null}
+
+        <AppButton
+          title={isSubmitting ? "Creating pass..." : "Create Pass"}
+          onPress={onCreate}
+          disabled={isSubmitting}
+        />
+
+        {generatedPass ? (
+          <View
+            style={{
+              alignItems: "center",
+              borderColor: "#e5e7eb",
+              borderRadius: 16,
+              borderWidth: 1,
+              marginTop: 24,
+              padding: 16,
+            }}
+          >
+            <AppText
+              style={{ fontSize: 18, fontWeight: "700", marginBottom: 8 }}
+            >
+              Ready to Share
+            </AppText>
+            <AppText style={{ marginBottom: 16 }}>
+              {generatedPass.passType === "visitor" ? "Visitor" : "Delivery"}:{" "}
+              {generatedPass.label}
+            </AppText>
+            <QRCode value={generatedPass.qrToken} size={220} />
+            <AppText style={{ marginVertical: 16, textAlign: "center" }}>
+              Ask the guest to present this QR at the gate. They can also show a
+              screenshot or open the guest web link.
+            </AppText>
+            <AppButton title="Share Pass" onPress={sharePass} />
+            <View style={{ height: 10 }} />
+            <AppButton title="Share Guest Link" onPress={shareGuestLink} />
+            <View style={{ height: 10 }} />
+            <AppButton title="Open Guest Link" onPress={openGuestLink} />
+          </View>
+        ) : null}
+      </ScrollView>
     </Screen>
   );
 }
