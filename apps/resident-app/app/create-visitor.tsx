@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import * as Clipboard from "expo-clipboard";
 import QRCode from "react-native-qrcode-svg";
 import { router } from "expo-router";
 import {
@@ -28,18 +29,61 @@ export default function CreateVisitorScreen() {
     passType: "visitor" | "delivery";
     qrToken: string;
     guestUrl?: string;
+    expiresAt: string;
+    plateNo?: string | null;
+    status: string;
   } | null>(null);
 
-  async function sharePass() {
-    if (!generatedPass) return;
+  function formatDateTime(value: string) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return value;
+    }
+
+    return date.toLocaleString();
+  }
+
+  function buildShareMessage() {
+    if (!generatedPass) return "";
 
     const guestLinkLine = generatedPass.guestUrl
       ? `\n\nGuest web pass (no app):\n${generatedPass.guestUrl}`
       : "";
 
+    const plateLine = generatedPass.plateNo
+      ? `\nPlate number: ${generatedPass.plateNo}`
+      : "";
+
+    return `${generatedPass.passType === "visitor" ? "Visitor" : "Delivery"} pass for ${generatedPass.label}\n\nPass code:\n${generatedPass.qrToken}\n\nStatus: ${generatedPass.status}\nExpires: ${formatDateTime(generatedPass.expiresAt)}${plateLine}${guestLinkLine}\n\nGuest can show the QR image, screenshot, or guest page at the gate.`;
+  }
+
+  async function sharePass() {
+    if (!generatedPass) return;
+
     await Share.share({
-      message: `${generatedPass.passType === "visitor" ? "Visitor" : "Delivery"} pass for ${generatedPass.label}\n\nQR token:\n${generatedPass.qrToken}${guestLinkLine}\n\nGuest can just show the QR image or screenshot at the gate.`,
+      message: buildShareMessage(),
     });
+  }
+
+  async function copyPassCode() {
+    if (!generatedPass) return;
+
+    await Clipboard.setStringAsync(generatedPass.qrToken);
+    Alert.alert("Copied", "Pass code copied to clipboard.");
+  }
+
+  async function openSmsComposer() {
+    if (!generatedPass) return;
+
+    const smsUrl = `sms:?body=${encodeURIComponent(buildShareMessage())}`;
+    const canOpen = await Linking.canOpenURL(smsUrl);
+
+    if (!canOpen) {
+      Alert.alert("Cannot open", "SMS app is not available on this device.");
+      return;
+    }
+
+    await Linking.openURL(smsUrl);
   }
 
   async function shareGuestLink() {
@@ -131,6 +175,9 @@ export default function CreateVisitorScreen() {
           passType,
           qrToken: res.qrToken,
           guestUrl: res.guestUrl,
+          expiresAt: res.pass?.valid_until ?? later.toISOString(),
+          plateNo: res.pass?.plate_no ?? null,
+          status: res.pass?.status ?? "active",
         });
         Alert.alert(
           "Pass created",
@@ -270,11 +317,39 @@ export default function CreateVisitorScreen() {
               {generatedPass.label}
             </AppText>
             <QRCode value={generatedPass.qrToken} size={220} />
+            <View
+              style={{
+                width: "100%",
+                marginTop: 16,
+                borderRadius: 12,
+                backgroundColor: "#f9fafb",
+                padding: 14,
+                gap: 8,
+              }}
+            >
+              <AppText>Status: {generatedPass.status}</AppText>
+              <AppText>
+                Expires: {formatDateTime(generatedPass.expiresAt)}
+              </AppText>
+              <AppText>
+                Plate number:{" "}
+                {generatedPass.plateNo ? generatedPass.plateNo : "N/A"}
+              </AppText>
+              <AppText>Pass code:</AppText>
+              <AppText selectable style={{ fontSize: 12 }}>
+                {generatedPass.qrToken}
+              </AppText>
+            </View>
             <AppText style={{ marginVertical: 16, textAlign: "center" }}>
-              Ask the guest to present this QR at the gate. They can also show a
+              Ask the guest to present this QR at the gate. They can also send
+              it through Messenger, Viber, WhatsApp, or SMS, or just show a
               screenshot or open the guest web link.
             </AppText>
             <AppButton title="Share Pass" onPress={sharePass} />
+            <View style={{ height: 10 }} />
+            <AppButton title="Copy Pass Code" onPress={copyPassCode} />
+            <View style={{ height: 10 }} />
+            <AppButton title="Send via SMS" onPress={openSmsComposer} />
             <View style={{ height: 10 }} />
             <AppButton title="Share Guest Link" onPress={shareGuestLink} />
             <View style={{ height: 10 }} />
