@@ -5,7 +5,14 @@ export function Screen(props: ViewProps) {
   return (
     <SafeAreaView
       {...props}
-      style={[{ flex: 1, backgroundColor: "white", padding: 16 }, props.style]}
+      style={[
+        {
+          flex: 1,
+          backgroundColor: "#f6f3ed",
+          padding: 20,
+        },
+        props.style,
+      ]}
     />
   );
 }

@@ -200,11 +200,21 @@ export default function CreateVisitorScreen() {
         contentContainerStyle={{ paddingBottom: 28 }}
         showsVerticalScrollIndicator={false}
       >
-        <AppText style={{ fontSize: 22, fontWeight: "700", marginBottom: 16 }}>
-          Create Visitor or Delivery Pass
+        <AppText
+          style={{
+            fontSize: 12,
+            fontWeight: "700",
+            letterSpacing: 1.2,
+            color: "#7c6f64",
+          }}
+        >
+          GUEST PASS
+        </AppText>
+        <AppText style={{ fontSize: 28, fontWeight: "700", marginBottom: 8 }}>
+          Create a pass the guest can show instantly.
         </AppText>
 
-        <AppText style={{ marginBottom: 16 }}>
+        <AppText style={{ marginBottom: 18, color: "#4b5563" }}>
           Resident creates the pass, then shares the QR image/screenshot or
           guest web link directly to the visitor or delivery rider.
         </AppText>
@@ -300,11 +310,12 @@ export default function CreateVisitorScreen() {
           <View
             style={{
               alignItems: "center",
-              borderColor: "#e5e7eb",
-              borderRadius: 16,
+              borderColor: "#e6ddcf",
+              borderRadius: 20,
               borderWidth: 1,
               marginTop: 24,
               padding: 16,
+              backgroundColor: "#fffdf8",
             }}
           >
             <AppText

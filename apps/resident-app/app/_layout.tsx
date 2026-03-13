@@ -51,5 +51,25 @@ export default function Layout() {
     );
   }
 
-  return <Stack screenOptions={{ headerShown: true }} />;
+  return (
+    <Stack
+      screenOptions={{
+        headerShown: true,
+        headerStyle: { backgroundColor: "#183b56" },
+        headerTintColor: "#fffdf7",
+        headerTitleStyle: { fontWeight: "700", fontSize: 18 },
+        headerShadowVisible: false,
+        contentStyle: { backgroundColor: "#f6f3ed" },
+      }}
+    >
+      <Stack.Screen name="index" options={{ title: "Resident Portal" }} />
+      <Stack.Screen name="login" options={{ title: "Resident Sign In" }} />
+      <Stack.Screen name="qr" options={{ title: "Resident Access QR" }} />
+      <Stack.Screen
+        name="create-visitor"
+        options={{ title: "Create Guest Pass" }}
+      />
+      <Stack.Screen name="history" options={{ title: "Pass History" }} />
+    </Stack>
+  );
 }

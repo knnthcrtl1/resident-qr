@@ -44,12 +44,26 @@ export default function LoginScreen() {
 
   return (
     <Screen>
-      <AppText style={{ fontSize: 22, fontWeight: "700", marginBottom: 16 }}>
-        Resident Login
+      <AppText
+        style={{
+          fontSize: 12,
+          fontWeight: "700",
+          letterSpacing: 1.2,
+          color: "#7c6f64",
+        }}
+      >
+        RESIDENT ACCESS
+      </AppText>
+      <AppText style={{ fontSize: 26, fontWeight: "700", marginBottom: 8 }}>
+        Sign in to create and manage guest passes.
+      </AppText>
+      <AppText style={{ marginBottom: 18, color: "#4b5563" }}>
+        Use your resident account. Guests do not need to install the app or log
+        in.
       </AppText>
 
       <TextInput
-        placeholder="Email or phone"
+        placeholder="Resident email or phone"
         value={emailOrPhone}
         onChangeText={setEmailOrPhone}
         style={{
@@ -76,7 +90,7 @@ export default function LoginScreen() {
       />
 
       <AppButton
-        title={isSubmitting ? "Logging in..." : "Login"}
+        title={isSubmitting ? "Signing in..." : "Sign In"}
         onPress={onLogin}
         disabled={isSubmitting}
       />

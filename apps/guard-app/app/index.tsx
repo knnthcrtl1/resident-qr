@@ -10,22 +10,33 @@ export default function HomeScreen() {
 
   return (
     <Screen>
-      <AppText style={{ fontSize: 24, fontWeight: "700", marginBottom: 20 }}>
-        Guard App
+      <AppText
+        style={{
+          fontSize: 12,
+          fontWeight: "700",
+          letterSpacing: 1.2,
+          color: "#7c6f64",
+        }}
+      >
+        GATE DESK
+      </AppText>
+      <AppText style={{ fontSize: 28, fontWeight: "700", marginBottom: 10 }}>
+        Validate passes and monitor gate activity.
       </AppText>
 
       {!user ? (
         <>
-          <AppText style={{ marginBottom: 12 }}>
-            Login required: only guard/admin accounts can open Scan QR and
-            Incidents.
+          <AppText style={{ marginBottom: 14, color: "#4b5563" }}>
+            Sign in with a guard or admin account to open the QR scanner and
+            incident tools.
           </AppText>
           <AppButton title="Login" onPress={() => router.push("/login")} />
         </>
       ) : canAccessGuardTools ? (
         <>
-          <AppText style={{ marginBottom: 12 }}>
-            Signed in as {user.name} ({user.role || "guard"}).
+          <AppText style={{ marginBottom: 14, color: "#4b5563" }}>
+            Signed in as {user.name} ({user.role || "guard"}). Keep the line
+            moving by scanning passes and checking exceptions quickly.
           </AppText>
           <AppButton title="Scan QR" onPress={() => router.push("/scan")} />
           <AppText style={{ height: 12 }} />
@@ -36,8 +47,9 @@ export default function HomeScreen() {
         </>
       ) : (
         <>
-          <AppText style={{ marginBottom: 12 }}>
-            Access denied: Scan QR and Incidents are for guard/admin only.
+          <AppText style={{ marginBottom: 14, color: "#4b5563" }}>
+            Access denied. QR scanning and incidents are limited to guard/admin
+            accounts.
           </AppText>
           <AppButton
             title="Back to Login"

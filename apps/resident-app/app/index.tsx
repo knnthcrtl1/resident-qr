@@ -19,14 +19,38 @@ export default function HomeScreen() {
 
   return (
     <Screen>
-      <AppText style={{ fontSize: 24, fontWeight: "700", marginBottom: 20 }}>
-        Resident App
+      <AppText
+        style={{
+          fontSize: 12,
+          fontWeight: "700",
+          letterSpacing: 1.2,
+          color: "#7c6f64",
+        }}
+      >
+        RESIDENT HUB
+      </AppText>
+      <AppText style={{ fontSize: 28, fontWeight: "700", marginBottom: 10 }}>
+        Manage entry passes with less back-and-forth.
       </AppText>
 
-      <AppText style={{ marginBottom: 16 }}>
+      <AppText style={{ marginBottom: 18, color: "#4b5563" }}>
         {user
-          ? `Signed in as ${user.name}. Create visitor or delivery QR passes and share them directly.`
-          : "Resident login is required only for the resident account that creates and shares visitor or delivery passes."}
+          ? `Signed in as ${user.name}. Create visitor or delivery passes, then send the QR, screenshot, or guest link directly.`
+          : "Only the resident who creates the pass needs to sign in. Visitors and riders do not need an account."}
+      </AppText>
+
+      <AppText
+        style={{
+          marginBottom: 18,
+          padding: 14,
+          borderRadius: 14,
+          backgroundColor: "#fffaf0",
+          borderWidth: 1,
+          borderColor: "#eadfcb",
+          color: "#5b4b3a",
+        }}
+      >
+        Quick flow: create pass, share pass, guard scans at the gate.
       </AppText>
 
       {user ? (

@@ -13,15 +13,29 @@ export function AppButton({ title, onPress, disabled = false }: Props) {
       disabled={disabled}
       onPress={onPress}
       style={{
-        backgroundColor: disabled ? "#6b7280" : "#111827",
-        paddingVertical: 12,
-        paddingHorizontal: 16,
-        borderRadius: 10,
+        backgroundColor: disabled ? "#94a3b8" : "#183b56",
+        paddingVertical: 14,
+        paddingHorizontal: 18,
+        borderRadius: 14,
         alignItems: "center",
         opacity: disabled ? 0.8 : 1,
+        shadowColor: "#183b56",
+        shadowOpacity: disabled ? 0 : 0.14,
+        shadowRadius: 10,
+        shadowOffset: { width: 0, height: 6 },
+        elevation: disabled ? 0 : 2,
       }}
     >
-      <Text style={{ color: "white", fontWeight: "600" }}>{title}</Text>
+      <Text
+        style={{
+          color: "white",
+          fontWeight: "700",
+          fontSize: 15,
+          letterSpacing: 0.2,
+        }}
+      >
+        {title}
+      </Text>
     </Pressable>
   );
 }

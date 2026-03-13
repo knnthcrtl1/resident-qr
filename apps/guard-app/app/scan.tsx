@@ -80,10 +80,26 @@ export default function ScanScreen() {
   return (
     <Screen style={{ padding: 0 }}>
       <View style={{ padding: 16 }}>
-        <AppText style={{ fontSize: 20, fontWeight: "700" }}>
-          Guard Scanner
+        <AppText
+          style={{
+            fontSize: 12,
+            fontWeight: "700",
+            letterSpacing: 1.2,
+            color: "#7c6f64",
+          }}
+        >
+          QR VALIDATION
         </AppText>
-        <AppText style={{ marginVertical: 8 }}>Mode: {direction}</AppText>
+        <AppText style={{ fontSize: 26, fontWeight: "700", marginBottom: 6 }}>
+          Scan inside the frame for faster reads.
+        </AppText>
+        <AppText style={{ marginBottom: 10, color: "#4b5563" }}>
+          Use IN for arrivals. Visitor and delivery passes are checked for
+          status, expiry, usage, and plate details.
+        </AppText>
+        <AppText style={{ marginBottom: 8, fontWeight: "600" }}>
+          Mode: {direction}
+        </AppText>
         <View style={{ flexDirection: "row", gap: 10 }}>
           <Button title="IN" onPress={() => setDirection("IN")} />
           <Button title="OUT" onPress={() => setDirection("OUT")} />

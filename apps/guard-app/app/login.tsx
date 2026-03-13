@@ -42,12 +42,25 @@ export default function GuardLoginScreen() {
 
   return (
     <Screen>
-      <AppText style={{ fontSize: 22, fontWeight: "700", marginBottom: 16 }}>
-        Guard Login
+      <AppText
+        style={{
+          fontSize: 12,
+          fontWeight: "700",
+          letterSpacing: 1.2,
+          color: "#7c6f64",
+        }}
+      >
+        GUARD ACCESS
+      </AppText>
+      <AppText style={{ fontSize: 26, fontWeight: "700", marginBottom: 8 }}>
+        Sign in to scan and validate passes.
+      </AppText>
+      <AppText style={{ marginBottom: 18, color: "#4b5563" }}>
+        Use a guard or admin account for gate operations.
       </AppText>
 
       <TextInput
-        placeholder="Email or phone"
+        placeholder="Guard email or phone"
         value={emailOrPhone}
         onChangeText={setEmailOrPhone}
         style={{
@@ -74,7 +87,7 @@ export default function GuardLoginScreen() {
       />
 
       <AppButton
-        title={isSubmitting ? "Logging in..." : "Login"}
+        title={isSubmitting ? "Signing in..." : "Sign In"}
         onPress={onLogin}
         disabled={isSubmitting}
       />

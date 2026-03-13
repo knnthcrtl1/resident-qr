@@ -33,13 +33,35 @@ export default function QRScreen() {
 
   return (
     <Screen style={{ alignItems: "center", justifyContent: "center" }}>
-      <AppText style={{ fontSize: 22, fontWeight: "700", marginBottom: 16 }}>
-        Resident QR
+      <AppText
+        style={{
+          fontSize: 12,
+          fontWeight: "700",
+          letterSpacing: 1.2,
+          color: "#7c6f64",
+        }}
+      >
+        RESIDENT ACCESS
+      </AppText>
+      <AppText
+        style={{
+          fontSize: 26,
+          fontWeight: "700",
+          marginBottom: 8,
+          textAlign: "center",
+        }}
+      >
+        Your gate QR refreshes automatically.
+      </AppText>
+      <AppText
+        style={{ marginBottom: 18, textAlign: "center", color: "#4b5563" }}
+      >
+        Present this code for resident access. Refresh anytime if needed.
       </AppText>
       {token ? (
         <QRCode value={token} size={240} />
       ) : (
-        <AppText>No QR yet</AppText>
+        <AppText>No QR available yet.</AppText>
       )}
       <AppText style={{ height: 16 }} />
       <AppButton
