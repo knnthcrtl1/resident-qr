@@ -15,24 +15,29 @@ import {
 import { api } from "@qr/api";
 import { useAuthStore } from "@qr/store";
 import { Screen, AppButton, AppText } from "@qr/ui";
+import type { CreatePassPayload, PassKind } from "@qr/types";
+
+type GeneratedPassView = {
+  label: string;
+  passType: PassKind;
+  qrToken: string;
+  guestUrl?: string;
+  expiresAt: string;
+  plateNo?: string | null;
+  status: string;
+};
 
 export default function CreateVisitorScreen() {
   const user = useAuthStore((s) => s.user);
-  const [passType, setPassType] = useState<"visitor" | "delivery">("visitor");
+  const [passType, setPassType] = useState<PassKind>("visitor");
   const [visitorName, setVisitorName] = useState("");
   const [deliveryType, setDeliveryType] = useState("");
   const [hasVehicle, setHasVehicle] = useState(false);
   const [plateNo, setPlateNo] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [generatedPass, setGeneratedPass] = useState<{
-    label: string;
-    passType: "visitor" | "delivery";
-    qrToken: string;
-    guestUrl?: string;
-    expiresAt: string;
-    plateNo?: string | null;
-    status: string;
-  } | null>(null);
+  const [generatedPass, setGeneratedPass] = useState<GeneratedPassView | null>(
+    null,
+  );
 
   function formatDateTime(value: string) {
     const date = new Date(value);
@@ -155,7 +160,7 @@ export default function CreateVisitorScreen() {
       const now = new Date();
       const later = new Date(Date.now() + 2 * 60 * 60 * 1000);
 
-      const res = await api.createPass({
+      const payload: CreatePassPayload = {
         pass_type: passType,
         household_id: user.householdId,
         issued_by_user_id: user.id,
@@ -166,7 +171,9 @@ export default function CreateVisitorScreen() {
         plate_no: hasVehicle ? plateNo.trim() : "",
         valid_from: now.toISOString(),
         valid_until: later.toISOString(),
-      });
+      };
+
+      const res = await api.createPass(payload);
 
       if (res.ok && res.qrToken) {
         setGeneratedPass({

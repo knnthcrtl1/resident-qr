@@ -1,55 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Button, Dimensions, View } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
-import { router } from "expo-router";
 import { api } from "@qr/api";
-import { useAuthStore } from "@qr/store";
 import { Screen, AppText } from "@qr/ui";
-import type { ValidateScanResponse } from "@qr/types";
+import type { Direction, ValidateScanResponse } from "@qr/types";
+import { useGuardRouteAccess } from "../hooks/use-guard-route-access";
 
 const QR_BOX_SIZE = Math.min(Dimensions.get("window").width - 56, 320);
+const SAME_QR_COOLDOWN_MS = 2500;
 
 export default function ScanScreen() {
-  const user = useAuthStore((s) => s.user);
+  const { user, canAccess } = useGuardRouteAccess();
   const [permission, requestPermission] = useCameraPermissions();
-  const [direction, setDirection] = useState<"IN" | "OUT">("IN");
+  const [direction, setDirection] = useState<Direction>("IN");
   const [busy, setBusy] = useState(false);
   const [lastScan, setLastScan] = useState<ValidateScanResponse | null>(null);
+  const [lastScannedToken, setLastScannedToken] = useState("");
+  const [lastScannedAt, setLastScannedAt] = useState(0);
 
   useEffect(() => {
     if (!permission?.granted) requestPermission();
   }, [permission?.granted, requestPermission]);
 
-  useEffect(() => {
-    if (!user) {
-      Alert.alert("Login required", "Please login as guard/admin first.", [
-        { text: "Go to Login", onPress: () => router.replace("/login") },
-      ]);
-      return;
-    }
-
-    if (user.role && user.role !== "guard" && user.role !== "admin") {
-      Alert.alert(
-        "Access denied",
-        "Only guard or admin accounts can use scanner.",
-        [{ text: "Back", onPress: () => router.replace("/") }],
-      );
-    }
-  }, [user]);
-
   async function onScan(token: string) {
-    if (!user) {
-      Alert.alert("Login required", "Please login as guard/admin first.");
-      router.replace("/login");
-      return;
-    }
-
-    if (user.role && user.role !== "guard" && user.role !== "admin") {
-      Alert.alert("Access denied", "Only guard or admin can scan QR.");
+    if (!user || !canAccess) {
       return;
     }
 
     if (busy) return;
+
+    const now = Date.now();
+    const isDuplicateRapidScan =
+      token === lastScannedToken && now - lastScannedAt < SAME_QR_COOLDOWN_MS;
+    if (isDuplicateRapidScan) {
+      return;
+    }
+
+    setLastScannedToken(token);
+    setLastScannedAt(now);
 
     setBusy(true);
     try {
