@@ -3,5 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "main": "src/index.ts",
-  "types": "src/index.ts"
+  "types": "src/index.ts",
+  "dependencies": {
+    "@qr/store": "workspace:*",
+    "@qr/types": "workspace:*",
+    "expo-router": "~6.0.23",
+    "react": "19.1.0",
+    "react-native": "0.81.5"
+  }
 }

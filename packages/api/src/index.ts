@@ -7,9 +7,16 @@ import type {
   ValidateScanResponse,
 } from "@qr/types";
 import axios from "axios";
+import { resolveApiBaseUrl } from "./config";
 
 type ApiConfig = { baseUrl: string };
-let config: ApiConfig = { baseUrl: "http://192.168.1.43:8000/api" };
+type ApiRequestInit = {
+  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+  headers?: Record<string, string>;
+  body?: unknown;
+};
+
+let config: ApiConfig = { baseUrl: resolveApiBaseUrl() };
 
 const client = axios.create({
   baseURL: config.baseUrl,
@@ -24,7 +31,7 @@ export function setApiConfig(next: ApiConfig) {
   client.defaults.baseURL = config.baseUrl;
 }
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
+async function request<T>(path: string, init?: ApiRequestInit): Promise<T> {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     ...(init?.headers || {}),
@@ -34,7 +41,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     method: init?.method || "GET",
     url: path,
     headers,
-    data: init?.body ? JSON.parse(init.body) : undefined,
+    data: init?.body ?? undefined,
     validateStatus: () => true, // Don't throw on any status code
   });
 
@@ -60,13 +67,13 @@ export const api = {
   login: (emailOrPhone: string, password: string) =>
     request<LoginResponse>("/auth/login", {
       method: "POST",
-      body: JSON.stringify({ emailOrPhone, password }),
+      body: { emailOrPhone, password },
     }),
 
   issueResidentToken: (user_id: number) =>
     request<IssueResidentTokenResponse>("/resident/token", {
       method: "POST",
-      body: JSON.stringify({ user_id }),
+      body: { user_id },
     }),
 
   createPass: (payload: CreatePassPayload) => {
@@ -78,13 +85,16 @@ export const api = {
       headers: {
         "X-Idempotency-Key": key,
       },
-      body: JSON.stringify(bodyPayload),
+      body: bodyPayload,
     });
   },
 
   validateScan: (payload: ValidateScanPayload) =>
     request<ValidateScanResponse>("/scans/validate", {
       method: "POST",
-      body: JSON.stringify(payload),
+      body: payload,
     }),
 };
+
+export * from "./errors";
+export * from "./config";

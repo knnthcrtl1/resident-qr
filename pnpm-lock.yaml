@@ -228,7 +228,23 @@ importers:
 
   packages/types: {}
 
-  packages/ui: {}
+  packages/ui:
+    dependencies:
+      '@qr/store':
+        specifier: workspace:*
+        version: link:../store
+      '@qr/types':
+        specifier: workspace:*
+        version: link:../types
+      expo-router:
+        specifier: ~6.0.23
+        version: 6.0.23(c5fd2788693328819b9c6770f39185dc)
+      react:
+        specifier: 19.1.0
+        version: 19.1.0
+      react-native:
+        specifier: 0.81.5
+        version: 0.81.5(@babel/core@7.29.0)(@react-native-community/cli@13.6.4)(@types/react@19.1.17)(react@19.1.0)
 
 packages:
 

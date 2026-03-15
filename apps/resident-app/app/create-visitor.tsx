@@ -12,10 +12,10 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { api } from "@qr/api";
-import { useAuthStore } from "@qr/store";
+import { api, getApiErrorMessage } from "@qr/api";
 import { Screen, AppButton, AppText } from "@qr/ui";
 import type { CreatePassPayload, PassKind } from "@qr/types";
+import { useResidentRouteAccess } from "../hooks/use-resident-route-access";
 
 type GeneratedPassView = {
   label: string;
@@ -28,7 +28,7 @@ type GeneratedPassView = {
 };
 
 export default function CreateVisitorScreen() {
-  const user = useAuthStore((s) => s.user);
+  const { user, canAccess } = useResidentRouteAccess();
   const [passType, setPassType] = useState<PassKind>("visitor");
   const [visitorName, setVisitorName] = useState("");
   const [deliveryType, setDeliveryType] = useState("");
@@ -119,6 +119,7 @@ export default function CreateVisitorScreen() {
 
   async function onCreate() {
     if (isSubmitting) return;
+    if (!canAccess) return;
     if (!user) {
       Alert.alert(
         "Resident login required",
@@ -195,7 +196,10 @@ export default function CreateVisitorScreen() {
       }
     } catch (error) {
       console.error("Create pass error:", error);
-      Alert.alert("Error", "Could not create pass. Please try again.");
+      Alert.alert(
+        "Error",
+        getApiErrorMessage(error, "Could not create pass. Please try again."),
+      );
     } finally {
       setIsSubmitting(false);
     }

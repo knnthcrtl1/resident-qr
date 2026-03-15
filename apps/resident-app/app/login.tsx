@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TextInput, Alert } from "react-native";
 import { router } from "expo-router";
-import { api, setAuthToken } from "@qr/api";
+import { api, getApiErrorMessage, setAuthToken } from "@qr/api";
 import { useAuthStore } from "@qr/store";
 import { Screen, AppButton, AppText } from "@qr/ui";
 import { saveResidentSession } from "../hooks/resident-session";
@@ -42,7 +42,10 @@ export default function LoginScreen() {
       }
     } catch (error) {
       console.error("Login error:", error);
-      Alert.alert("Error", "Network error or server not reachable");
+      Alert.alert(
+        "Error",
+        getApiErrorMessage(error, "Network error or server not reachable"),
+      );
     } finally {
       setIsSubmitting(false);
     }

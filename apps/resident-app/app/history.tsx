@@ -1,7 +1,10 @@
 import React from "react";
 import { Screen, AppText } from "@qr/ui";
+import { useResidentRouteAccess } from "../hooks/use-resident-route-access";
 
 export default function HistoryScreen() {
+  useResidentRouteAccess();
+
   return (
     <Screen>
       <AppText
