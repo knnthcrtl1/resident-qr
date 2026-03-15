@@ -1,12 +1,20 @@
 import React from "react";
 import { router } from "expo-router";
+import { setAuthToken } from "@qr/api";
 import { useAuthStore } from "@qr/store";
 import { Screen, AppButton, AppText } from "@qr/ui";
 
 export default function HomeScreen() {
   const user = useAuthStore((s) => s.user);
+  const logout = useAuthStore((s) => s.logout);
   const canAccessGuardTools =
     !!user && (!user.role || user.role === "guard" || user.role === "admin");
+
+  function onLogout() {
+    logout();
+    setAuthToken("");
+    router.replace("/login");
+  }
 
   return (
     <Screen>
@@ -44,6 +52,8 @@ export default function HomeScreen() {
             title="Incidents"
             onPress={() => router.push("/incidents")}
           />
+          <AppText style={{ height: 12 }} />
+          <AppButton title="Logout" onPress={onLogout} />
         </>
       ) : (
         <>
