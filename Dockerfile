@@ -8,16 +8,22 @@ RUN apt-get update && apt-get install -y \
     git \
     unzip \
     zip \
+    libcurl4-openssl-dev \
     libicu-dev \
+    libonig-dev \
     libpq-dev \
+    libxml2-dev \
     libzip-dev \
     nodejs \
     npm \
     && docker-php-ext-install \
     bcmath \
+    curl \
     intl \
+    mbstring \
     pdo \
     pdo_pgsql \
+    xml \
     zip \
     && rm -rf /var/lib/apt/lists/*
 
