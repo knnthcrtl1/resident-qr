@@ -1,0 +1,57 @@
+databases:
+  - name: subdivision-db
+    plan: free
+    databaseName: subdivision
+    user: subdivision_user
+
+services:
+  - type: web
+    name: subdivision-backend
+    runtime: php
+    rootDir: backend
+    plan: free
+    buildCommand: |
+      composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+      npm ci
+      npm run build
+      php artisan config:cache
+      php artisan route:cache
+      php artisan view:cache
+    preDeployCommand: php artisan migrate --force
+    startCommand: php artisan serve --host 0.0.0.0 --port $PORT
+    healthCheckPath: /up
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        generateValue: true
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: subdivision-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: subdivision-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: subdivision-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: subdivision-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: subdivision-db
+          property: password
+      - key: DATABASE_URL
+        fromDatabase:
+          name: subdivision-db
+          property: connectionString
