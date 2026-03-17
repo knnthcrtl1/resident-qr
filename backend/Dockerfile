@@ -4,6 +4,7 @@ WORKDIR /var/www/html
 
 # Install OS packages and PHP extensions required by Laravel + PostgreSQL.
 RUN apt-get update && apt-get install -y \
+    ca-certificates \
     curl \
     git \
     unzip \
@@ -32,12 +33,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 # Install PHP dependencies first for better layer caching.
 COPY composer.json composer.lock ./
-RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --no-scripts \
-    --ignore-platform-req=ext-pcntl \
-    --ignore-platform-req=ext-posix \
-    --ignore-platform-req=ext-redis \
-    --ignore-platform-req=ext-apcu \
-    --ignore-platform-req=ext-memcached
+RUN COMPOSER_ALLOW_SUPERUSER=1 COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --no-progress --prefer-dist --optimize-autoloader --no-dev --no-scripts --ignore-platform-reqs
 
 # Install frontend dependencies and build assets.
 COPY package.json package-lock.json* ./
