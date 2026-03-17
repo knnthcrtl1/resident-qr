@@ -1,7 +1,7 @@
 {
   "name": "subdivision-app",
   "private": true,
-  "packageManager": "pnpm@9",
+  "packageManager": "pnpm@8.15.8",
   "scripts": {
     "dev:resident": "pnpm -C apps/resident-app start",
     "dev:guard": "pnpm -C apps/guard-app start",

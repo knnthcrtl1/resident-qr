@@ -2,7 +2,7 @@
   "build": {
     "preview": {
       "node": "20.19.4",
-      "pnpm": "9.12.3",
+      "pnpm": "8.15.8",
       "distribution": "internal",
       "android": {
         "buildType": "apk"
@@ -10,7 +10,7 @@
     },
     "production": {
       "node": "20.19.4",
-      "pnpm": "9.12.3",
+      "pnpm": "8.15.8",
       "android": {
         "buildType": "app-bundle"
       }
