@@ -9,7 +9,13 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true,
+          "NSAllowsLocalNetworking": true
+        }
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -20,7 +26,10 @@
       },
       "edgeToEdgeEnabled": true,
       "usesCleartextTraffic": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "networkSecurityConfig": {
+        "cleartextTrafficPermitted": true
+      }
     },
     "web": {
       "output": "static",
@@ -41,19 +50,6 @@
         }
       ]
     ],
-    "ios": {
-      "infoPlist": {
-        "NSAppTransportSecurity": {
-          "NSAllowsArbitraryLoads": true,
-          "NSAllowsLocalNetworking": true
-        }
-      }
-    },
-    "android": {
-      "networkSecurityConfig": {
-        "cleartextTrafficPermitted": true
-      }
-    },
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
