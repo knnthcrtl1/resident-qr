@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => array_values(array_filter(array_map('trim', explode(',', (string) env('CORS_PATHS', ''))))),
 
     'allowed_methods' => ['*'],
 
