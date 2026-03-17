@@ -42,6 +42,14 @@ RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
 # Copy application source from backend directory.
 COPY backend/. .
 
+# Ensure Laravel runtime directories exist and are writable in container.
+RUN mkdir -p bootstrap/cache \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/logs \
+    && chmod -R 775 bootstrap/cache storage
+
 # Build Vite assets for production.
 RUN npm run build
 
