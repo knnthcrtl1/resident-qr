@@ -32,7 +32,12 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 # Install PHP dependencies first for better layer caching.
 COPY backend/composer.json backend/composer.lock ./
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --no-scripts
+RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --no-scripts \
+    --ignore-platform-req=ext-pcntl \
+    --ignore-platform-req=ext-posix \
+    --ignore-platform-req=ext-redis \
+    --ignore-platform-req=ext-apcu \
+    --ignore-platform-req=ext-memcached
 
 # Install frontend dependencies and build assets.
 COPY backend/package.json backend/package-lock.json* ./
