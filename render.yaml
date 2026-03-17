@@ -7,11 +7,10 @@ databases:
 services:
   - type: web
     name: subdivision-backend
-    runtime: docker
-    rootDir: backend
+    env: docker
     plan: free
-    dockerContext: .
-    dockerfilePath: Dockerfile
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
     preDeployCommand: php artisan migrate --force
     dockerCommand: php artisan serve --host 0.0.0.0 --port $PORT
     healthCheckPath: /up
