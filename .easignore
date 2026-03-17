@@ -1,0 +1,4 @@
+# Fallback excludes if EAS is run from repo root
+backend/**
+render.yaml
+Dockerfile
