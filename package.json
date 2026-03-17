@@ -5,6 +5,9 @@
   "scripts": {
     "dev:resident": "pnpm -C apps/resident-app start",
     "dev:guard": "pnpm -C apps/guard-app start",
+    "apk:resident": "pnpm -C apps/resident-app dlx eas-cli build -p android --profile preview",
+    "apk:guard": "pnpm -C apps/guard-app dlx eas-cli build -p android --profile preview",
+    "apk:all": "pnpm apk:resident && pnpm apk:guard",
     "install:all": "pnpm install",
     "lint:resident": "pnpm -C apps/resident-app lint",
     "lint:guard": "pnpm -C apps/guard-app lint",
