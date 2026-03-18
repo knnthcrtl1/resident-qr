@@ -2,6 +2,16 @@
 
 use Illuminate\Support\Str;
 
+$sessionDomain = env('SESSION_DOMAIN');
+
+if (is_string($sessionDomain)) {
+    $sessionDomain = trim($sessionDomain);
+
+    if ($sessionDomain === '' || strtolower($sessionDomain) === 'null') {
+        $sessionDomain = null;
+    }
+}
+
 return [
 
     /*
@@ -156,7 +166,7 @@ return [
     |
     */
 
-    'domain' => env('SESSION_DOMAIN'),
+    'domain' => $sessionDomain,
 
     /*
     |--------------------------------------------------------------------------
@@ -169,7 +179,7 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE'),
+    'secure' => env('SESSION_SECURE_COOKIE', env('APP_ENV') === 'production'),
 
     /*
     |--------------------------------------------------------------------------
