@@ -2,3 +2,5 @@
 backend/**
 render.yaml
 Dockerfile
+app.json
+eas.json

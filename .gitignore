@@ -16,3 +16,7 @@ backend/vendor
 backend/storage
 backend/bootstrap/cache
 backend/public/storage
+
+# Prevent accidental root Expo/EAS configs in monorepo
+/app.json
+/eas.json
