@@ -29,7 +29,8 @@
       "predictiveBackGestureEnabled": false,
       "networkSecurityConfig": {
         "cleartextTrafficPermitted": true
-      }
+      },
+      "package": "com.knnthcrtl1.residentapp"
     },
     "web": {
       "output": "static",
@@ -55,9 +56,11 @@
       "reactCompiler": true
     },
     "extra": {
+      "router": {},
       "eas": {
-        "projectId": "21d0257f-517f-4b37-958b-24a9ad0e8c1c"
+        "projectId": "e092ca4c-9ccd-463e-9a1a-8e62742cad1d"
       }
-    }
+    },
+    "owner": "knnthcrtl1"
   }
 }
