@@ -11,7 +11,7 @@ services:
     plan: free
     dockerContext: ./backend
     dockerfilePath: ./backend/Dockerfile
-    preDeployCommand: php artisan optimize:clear && php artisan migrate --force && php artisan db:seed
+    preDeployCommand: php artisan optimize:clear && php artisan migrate --force
     dockerCommand: php artisan serve --host 0.0.0.0 --port $PORT
     healthCheckPath: /up
     envVars:
@@ -30,10 +30,10 @@ services:
       - key: LOG_CHANNEL
         value: stderr
       - key: LOG_LEVEL
-        value: info
+        value: debug
 
       - key: SESSION_DRIVER
-        value: database
+        value: file
       - key: SESSION_SECURE_COOKIE
         value: "true"
       - key: SESSION_SAME_SITE
@@ -42,9 +42,9 @@ services:
         value: ""
 
       - key: CACHE_STORE
-        value: database
+        value: file
       - key: QUEUE_CONNECTION
-        value: database
+        value: sync
 
       - key: DB_CONNECTION
         value: pgsql
