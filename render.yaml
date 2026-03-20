@@ -11,7 +11,7 @@ services:
     plan: free
     dockerContext: ./backend
     dockerfilePath: ./backend/Dockerfile
-    preDeployCommand: php artisan optimize:clear && php artisan migrate --force
+    preDeployCommand: php artisan optimize:clear && php artisan migrate --force && php artisan db:seed --force
     dockerCommand: php artisan serve --host 0.0.0.0 --port $PORT
     healthCheckPath: /up
     envVars:
@@ -56,6 +56,8 @@ services:
         fromDatabase:
           name: subdivision-db
           property: port
+      - key: DB_SSLMODE
+        value: require
       - key: DB_DATABASE
         fromDatabase:
           name: subdivision-db
