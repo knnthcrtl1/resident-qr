@@ -9,22 +9,19 @@ services:
     name: subdivision-backend
     runtime: docker
     plan: free
-    dockerContext: ./backend
-    dockerfilePath: ./backend/Dockerfile
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
     preDeployCommand: php artisan optimize:clear && php artisan migrate --force && php artisan db:seed --force
-    dockerCommand: php artisan serve --host 0.0.0.0 --port $PORT
     healthCheckPath: /up
     envVars:
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
-        value: "false"
+        value: "true"
       - key: APP_URL
         value: https://resident-qr.onrender.com
       - key: ASSET_URL
         value: https://resident-qr.onrender.com
-      - key: FORCE_HTTPS
-        value: "true"
       - key: APP_KEY
         sync: false
       - key: LOG_CHANNEL
