@@ -48,7 +48,7 @@ RUN mkdir -p bootstrap/cache \
     storage/framework/sessions \
     storage/framework/views \
     storage/logs \
-    && chmod -R 775 bootstrap/cache storage
+    && chmod -R 777 bootstrap/cache storage
 
 # Build Vite assets for production.
 RUN npm run build
