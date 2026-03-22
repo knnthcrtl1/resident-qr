@@ -48,11 +48,12 @@ RUN mkdir -p bootstrap/cache \
     storage/framework/sessions \
     storage/framework/views \
     storage/logs \
-    && chmod -R 777 bootstrap/cache storage
+    && chmod -R 777 bootstrap/cache storage \
+    && chmod +x scripts/render-start.sh
 
 # Build Vite assets for production.
 RUN npm run build
 
 EXPOSE 10000
 
-CMD ["sh", "-c", "php artisan serve --host 0.0.0.0 --port ${PORT:-10000}"]
+CMD ["sh", "-c", "./scripts/render-start.sh"]
