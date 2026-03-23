@@ -25,11 +25,7 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "usesCleartextTraffic": true,
       "predictiveBackGestureEnabled": false,
-      "networkSecurityConfig": {
-        "cleartextTrafficPermitted": true
-      },
       "package": "com.knnthcrtl1.residentapp"
     },
     "web": {
