@@ -126,8 +126,8 @@ importers:
         specifier: ~54.0.33
         version: 54.0.33(@babel/core@7.29.0)(@expo/metro-runtime@6.1.2)(expo-router@6.0.23)(react-native@0.81.5)(react@19.1.0)
       expo-clipboard:
-        specifier: ^55.0.8
-        version: 55.0.9(expo@54.0.33)(react-native@0.81.5)(react@19.1.0)
+        specifier: ~8.0.8
+        version: 8.0.8(expo@54.0.33)(react-native@0.81.5)(react@19.1.0)
       expo-constants:
         specifier: ~18.0.13
         version: 18.0.13(expo@54.0.33)(react-native@0.81.5)
@@ -147,8 +147,8 @@ importers:
         specifier: ~6.0.23
         version: 6.0.23(@expo/metro-runtime@6.1.2)(@types/react@19.1.17)(expo-constants@18.0.13)(expo-linking@8.0.11)(expo@54.0.33)(react-dom@19.1.0)(react-native-gesture-handler@2.28.0)(react-native-reanimated@4.1.6)(react-native-safe-area-context@5.6.2)(react-native-screens@4.16.0)(react-native-web@0.21.2)(react-native@0.81.5)(react@19.1.0)
       expo-secure-store:
-        specifier: ^55.0.8
-        version: 55.0.9(expo@54.0.33)
+        specifier: ~15.0.8
+        version: 15.0.8(expo@54.0.33)
       expo-splash-screen:
         specifier: ~31.0.13
         version: 31.0.13(expo@54.0.33)
@@ -178,7 +178,7 @@ importers:
         version: 2.28.0(react-native@0.81.5)(react@19.1.0)
       react-native-qrcode-svg:
         specifier: ^6.3.21
-        version: 6.3.21(react-native-svg@15.15.3)(react-native@0.81.5)(react@19.1.0)
+        version: 6.3.21(react-native-svg@15.12.1)(react-native@0.81.5)(react@19.1.0)
       react-native-reanimated:
         specifier: ~4.1.1
         version: 4.1.6(@babel/core@7.29.0)(react-native-worklets@0.5.1)(react-native@0.81.5)(react@19.1.0)
@@ -188,6 +188,9 @@ importers:
       react-native-screens:
         specifier: ~4.16.0
         version: 4.16.0(react-native@0.81.5)(react@19.1.0)
+      react-native-svg:
+        specifier: ~15.12.1
+        version: 15.12.1(react-native@0.81.5)(react@19.1.0)
       react-native-web:
         specifier: ~0.21.0
         version: 0.21.2(react-dom@19.1.0)(react@19.1.0)
@@ -4604,8 +4607,8 @@ packages:
       - '@types/emscripten'
     dev: false
 
-  /expo-clipboard@55.0.9(expo@54.0.33)(react-native@0.81.5)(react@19.1.0):
-    resolution: {integrity: sha512-WJ9ougE8fEDu3/RV5Vz3gE5aNgnj1C0WByXCz3WUj8y/06bJyaIUDMq8FDLv3n0AO3guiErmkUunsD0EzSDUUw==}
+  /expo-clipboard@8.0.8(expo@54.0.33)(react-native@0.81.5)(react@19.1.0):
+    resolution: {integrity: sha512-VKoBkHIpZZDJTB0jRO4/PZskHdMNOEz3P/41tmM6fDuODMpqhvyWK053X0ebspkxiawJX9lX33JXHBCvVsTTOA==}
     peerDependencies:
       expo: '*'
       react: '*'
@@ -4872,8 +4875,8 @@ packages:
       - supports-color
     dev: false
 
-  /expo-secure-store@55.0.9(expo@54.0.33):
-    resolution: {integrity: sha512-TIPGjM73LKlebpXwgAu/yL7lNWr6RQYmFw3vgYHOqLFYQMpsBqkQmopovbNX3c/0+RCE9KZlLAkcz8r6detILQ==}
+  /expo-secure-store@15.0.8(expo@54.0.33):
+    resolution: {integrity: sha512-lHnzvRajBu4u+P99+0GEMijQMFCOYpWRO4dWsXSuMt77+THPIGjzNvVKrGSl6mMrLsfVaKL8BpwYZLGlgA+zAw==}
     peerDependencies:
       expo: '*'
     dependencies:
@@ -7244,7 +7247,7 @@ packages:
       react-native: 0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0)
     dev: false
 
-  /react-native-qrcode-svg@6.3.21(react-native-svg@15.15.3)(react-native@0.81.5)(react@19.1.0):
+  /react-native-qrcode-svg@6.3.21(react-native-svg@15.12.1)(react-native@0.81.5)(react@19.1.0):
     resolution: {integrity: sha512-6vcj4rcdpWedvphDR+NSJcudJykNuLgNGFwm2p4xYjR8RdyTzlrELKI5LkO4ANS9cQUbqsfkpippPv64Q2tUtA==}
     peerDependencies:
       react: '*'
@@ -7255,7 +7258,7 @@ packages:
       qrcode: 1.5.4
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0)
-      react-native-svg: 15.15.3(react-native@0.81.5)(react@19.1.0)
+      react-native-svg: 15.12.1(react-native@0.81.5)(react@19.1.0)
       text-encoding: 0.7.0
     dev: false
 
@@ -7298,8 +7301,8 @@ packages:
       warn-once: 0.1.1
     dev: false
 
-  /react-native-svg@15.15.3(react-native@0.81.5)(react@19.1.0):
-    resolution: {integrity: sha512-/k4KYwPBLGcx2f5d4FjE+vCScK7QOX14cl2lIASJ28u4slHHtIhL0SZKU7u9qmRBHxTCKPoPBtN6haT1NENJNA==}
+  /react-native-svg@15.12.1(react-native@0.81.5)(react@19.1.0):
+    resolution: {integrity: sha512-vCuZJDf8a5aNC2dlMovEv4Z0jjEUET53lm/iILFnFewa15b4atjVxU6Wirm6O9y6dEsdjDZVD7Q3QM4T1wlI8g==}
     peerDependencies:
       react: '*'
       react-native: '*'
