@@ -107,6 +107,18 @@ importers:
       '@expo/vector-icons':
         specifier: ^15.0.3
         version: 15.1.1(expo-font@14.0.11)(react-native@0.81.5)(react@19.1.0)
+      '@qr/api':
+        specifier: workspace:*
+        version: link:../../packages/api
+      '@qr/store':
+        specifier: workspace:*
+        version: link:../../packages/store
+      '@qr/types':
+        specifier: workspace:*
+        version: link:../../packages/types
+      '@qr/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@react-navigation/bottom-tabs':
         specifier: ^7.4.0
         version: 7.15.5(@react-navigation/native@7.1.33)(react-native-safe-area-context@5.6.2)(react-native-screens@4.16.0)(react-native@0.81.5)(react@19.1.0)

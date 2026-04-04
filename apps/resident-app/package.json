@@ -1,6 +1,6 @@
 {
   "name": "resident-app",
-  "main": "expo-router/entry",
+  "main": "index.js",
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
@@ -11,6 +11,10 @@
     "lint": "expo lint"
   },
   "dependencies": {
+    "@qr/api": "workspace:*",
+    "@qr/store": "workspace:*",
+    "@qr/types": "workspace:*",
+    "@qr/ui": "workspace:*",
     "@expo/vector-icons": "^15.0.3",
     "@react-navigation/bottom-tabs": "^7.4.0",
     "@react-navigation/elements": "^2.6.3",

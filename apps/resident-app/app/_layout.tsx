@@ -19,19 +19,25 @@ export default function Layout() {
     let active = true;
 
     async function hydrateResidentSession() {
-      const session = await loadResidentSession();
+      try {
+        const session = await loadResidentSession();
 
-      if (!active) {
-        return;
+        if (!active) {
+          return;
+        }
+
+        if (session?.user && session.token) {
+          setUser(session.user);
+          setToken(session.token);
+          setAuthToken(session.token);
+        }
+      } catch (error) {
+        console.warn("Failed to hydrate resident session", error);
+      } finally {
+        if (active) {
+          setIsHydrated(true);
+        }
       }
-
-      if (session?.user && session.token) {
-        setUser(session.user);
-        setToken(session.token);
-        setAuthToken(session.token);
-      }
-
-      setIsHydrated(true);
     }
 
     hydrateResidentSession();

@@ -42,6 +42,36 @@ To learn more about developing your project with Expo, look at the following res
 - [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
 - [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
+## Android release signing (local Gradle)
+
+1. Generate a release keystore from `apps/resident-app/android`:
+
+   ```bash
+   keytool -genkeypair -v -storetype PKCS12 -keystore app/resident-release-key.keystore -alias resident-key -keyalg RSA -keysize 2048 -validity 10000
+   ```
+
+2. Set signing properties in `android/gradle.properties`:
+
+   ```properties
+   RESIDENTAPP_UPLOAD_STORE_FILE=app/resident-release-key.keystore
+   RESIDENTAPP_UPLOAD_STORE_PASSWORD=your-store-password
+   RESIDENTAPP_UPLOAD_KEY_ALIAS=resident-key
+   RESIDENTAPP_UPLOAD_KEY_PASSWORD=your-key-password
+   ```
+
+3. Build a signed release APK:
+
+   ```bash
+   cd android
+   .\gradlew.bat clean assembleRelease
+   ```
+
+4. Output APK path:
+
+   ```text
+   android/app/build/outputs/apk/release/app-release.apk
+   ```
+
 ## Join the community
 
 Join our community of developers creating universal apps.
