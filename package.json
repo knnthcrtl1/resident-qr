@@ -1,18 +1,21 @@
 {
   "name": "subdivision-app",
   "private": true,
-  "packageManager": "pnpm@8.15.8",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev:resident": "pnpm -C apps/resident-app start",
-    "dev:guard": "pnpm -C apps/guard-app start",
-    "apk:resident": "pnpm -C apps/resident-app dlx eas-cli build -p android --profile preview",
-    "apk:guard": "pnpm -C apps/guard-app dlx eas-cli build -p android --profile preview",
-    "apk:all": "pnpm apk:resident && pnpm apk:guard",
-    "install:all": "pnpm install",
-    "lint:resident": "pnpm -C apps/resident-app lint",
-    "lint:guard": "pnpm -C apps/guard-app lint",
-    "lint:frontend": "pnpm lint:resident && pnpm lint:guard",
+    "dev:resident": "npm run start --workspace=apps/resident-app",
+    "dev:guard": "npm run start --workspace=apps/guard-app",
+    "apk:resident": "npm run apk --workspace=apps/resident-app",
+    "apk:guard": "npm run apk --workspace=apps/guard-app",
+    "apk:all": "npm run apk:resident && npm run apk:guard",
+    "install:all": "npm install",
+    "lint:resident": "npm run lint --workspace=apps/resident-app",
+    "lint:guard": "npm run lint --workspace=apps/guard-app",
+    "lint:frontend": "npm run lint:resident && npm run lint:guard",
     "lint:backend": "composer --working-dir backend run lint",
-    "lint": "pnpm lint:frontend && pnpm lint:backend"
+    "lint": "npm run lint:frontend && npm run lint:backend"
   }
 }

@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
+    "apk": "npx eas-cli build -p android --profile preview",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
     "ios": "expo run:ios",
@@ -11,10 +12,10 @@
     "lint": "expo lint"
   },
   "dependencies": {
-    "@qr/api": "workspace:*",
-    "@qr/store": "workspace:*",
-    "@qr/types": "workspace:*",
-    "@qr/ui": "workspace:*",
+    "@qr/api": "*",
+    "@qr/store": "*",
+    "@qr/types": "*",
+    "@qr/ui": "*",
     "@expo/vector-icons": "^15.0.3",
     "@react-navigation/bottom-tabs": "^7.4.0",
     "@react-navigation/elements": "^2.6.3",

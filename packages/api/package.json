@@ -11,7 +11,7 @@
     }
   },
   "dependencies": {
-    "@qr/types": "workspace:*",
+    "@qr/types": "*",
     "axios": "^1.13.6"
   }
 }

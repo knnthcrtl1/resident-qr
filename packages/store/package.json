@@ -6,6 +6,6 @@
   "types": "src/authStore.ts",
   "dependencies": {
     "zustand": "^4.5.2",
-    "@qr/types": "workspace:*"
+    "@qr/types": "*"
   }
 }

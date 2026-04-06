@@ -15,4 +15,7 @@ config.resolver.nodeModulesPaths = [
   path.resolve(workspaceRoot, "node_modules"),
 ];
 
+// Follow npm workspace symlinks/junctions for @qr/* packages
+config.resolver.unstable_enableSymlinks = true;
+
 module.exports = config;
