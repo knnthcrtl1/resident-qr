@@ -28,7 +28,8 @@
       "predictiveBackGestureEnabled": false,
       "networkSecurityConfig": {
         "cleartextTrafficPermitted": true
-      }
+      },
+      "package": "com.knnthcrtl1.guardapp"
     },
     "web": {
       "output": "static",
